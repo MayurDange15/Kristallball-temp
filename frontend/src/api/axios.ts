@@ -4,7 +4,7 @@ import axios from "axios";
 // dotenv.config();
 
 const api = axios.create({
-  baseURL: process.env.baseURL, // backend base
+  baseURL: import.meta.env.VITE_API_BASE_URL, // backend base
 });
 
 // Interceptor: attach JWT token
