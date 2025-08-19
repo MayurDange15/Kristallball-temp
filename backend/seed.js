@@ -181,10 +181,10 @@ const seedData = async () => {
     await assets[1].save();
     await assets[2].save();
 
-    console.log("✅ Expanded demo data with assets & movements seeded");
+    console.log("Expanded demo data with assets & movements seeded");
     process.exit();
   } catch (err) {
-    console.error("❌ Error seeding data:", err.message);
+    console.error("Error seeding data:", err.message);
     process.exit(1);
   }
 };

@@ -9,7 +9,7 @@ import Transfers from "./pages/Transfers";
 import Assignments from "./pages/Assignments";
 import Login from "./pages/Login";
 
-const App: React.FC = () => {
+export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -52,6 +52,4 @@ const App: React.FC = () => {
       </BrowserRouter>
     </AuthProvider>
   );
-};
-
-export default App;
+}

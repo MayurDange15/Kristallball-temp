@@ -1,13 +1,10 @@
-import React, { useContext } from "react";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { Link as RouterLink } from "react-router";
-import { AuthContext } from "../context/AuthContextDefinations";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
-const NavBar: React.FC = () => {
-  const auth = useContext(AuthContext);
-  if (!auth) return null;
-
-  const { user, logout } = auth;
+export default function NavBar() {
+  const { user, logout } = useContext(AuthContext);
   if (!user) return null;
 
   return (
@@ -16,6 +13,7 @@ const NavBar: React.FC = () => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Military Asset Management
         </Typography>
+
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button color="inherit" component={RouterLink} to="/">
             Dashboard
@@ -26,11 +24,9 @@ const NavBar: React.FC = () => {
           <Button color="inherit" component={RouterLink} to="/transfers">
             Transfers
           </Button>
-          {user.role !== "logistics" && (
-            <Button color="inherit" component={RouterLink} to="/assignments">
-              Assignments
-            </Button>
-          )}
+          <Button color="inherit" component={RouterLink} to="/assignments">
+            Assignments
+          </Button>
           <Button color="inherit" onClick={logout}>
             Logout ({user.role})
           </Button>
@@ -38,6 +34,4 @@ const NavBar: React.FC = () => {
       </Toolbar>
     </AppBar>
   );
-};
-
-export default NavBar;
+}

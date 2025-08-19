@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from "react";
-import type { ReactNode } from "react";
+import { createContext, useEffect, useState } from "react";
 import api from "../api/axios";
-import type { User } from "../types/auth";
-import { AuthContext } from "./AuthContextDefinations";
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext(null);
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null); // { id, username, role, base }
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    const u = localStorage.getItem("user");
+    if (u) setUser(JSON.parse(u));
     setLoading(false);
   }, []);
 
-  const login = async (username: string, password: string) => {
+  const login = async (username, password) => {
     const res = await api.post("/auth/login", { username, password });
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -34,4 +32,4 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       {children}
     </AuthContext.Provider>
   );
-};
+}

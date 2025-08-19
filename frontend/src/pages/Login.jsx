@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
 import {
   Container,
@@ -9,7 +10,6 @@ import {
   Box,
   Alert,
 } from "@mui/material";
-import { AuthContext } from "../context/AuthContextDefinations";
 
 export default function Login() {
   const { login } = useContext(AuthContext);

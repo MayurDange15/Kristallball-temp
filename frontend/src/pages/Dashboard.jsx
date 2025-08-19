@@ -1,6 +1,6 @@
 import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { Typography, Container } from "@mui/material";
-import { AuthContext } from "../context/AuthContextDefinations";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
