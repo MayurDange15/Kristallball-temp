@@ -16,6 +16,9 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
@@ -79,7 +82,42 @@ export default function DashboardLayout({ children }) {
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItemButton>
-            {/* Add more nav items here */}
+            {user && ["admin", "logistics"].includes(user.role) && (
+              <>
+                <ListItemButton
+                  component={RouterLink}
+                  to="/purchases"
+                  onClick={() => setOpen(false)}
+                >
+                  <ListItemIcon>
+                    <ShoppingCartIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Purchases" />
+                </ListItemButton>
+                <ListItemButton
+                  component={RouterLink}
+                  to="/transfers"
+                  onClick={() => setOpen(false)}
+                >
+                  <ListItemIcon>
+                    <SwapHorizIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Transfers" />
+                </ListItemButton>
+              </>
+            )}
+            {user && ["admin", "commander"].includes(user.role) && (
+              <ListItemButton
+                component={RouterLink}
+                to="/assignments"
+                onClick={() => setOpen(false)}
+              >
+                <ListItemIcon>
+                  <AssignmentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Assignments" />
+              </ListItemButton>
+            )}
           </List>
           <Divider />
         </Box>

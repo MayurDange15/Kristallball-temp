@@ -54,4 +54,13 @@ router.get("/", protect(["admin", "logistics"]), async (req, res) => {
   }
 });
 
+// Get asset types
+router.get(
+  "/types",
+  protect(["admin", "logistics", "commander"]),
+  (req, res) => {
+    res.json(Asset.schema.path("type").enumValues);
+  }
+);
+
 module.exports = router;

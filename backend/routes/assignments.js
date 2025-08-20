@@ -53,4 +53,16 @@ router.post("/expend", protect(["admin", "commander"]), async (req, res) => {
   }
 });
 
+// Get assignment/expenditure history
+router.get("/history", protect(["admin", "commander"]), async (req, res) => {
+  try {
+    const history = await Movement.find({
+      type: { $in: ["assignment", "expenditure"] },
+    }).populate("asset createdBy");
+    res.json(history);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;

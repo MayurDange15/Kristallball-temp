@@ -49,10 +49,10 @@ export function AuthProvider({ children }) {
     // Temporary stub to keep you moving:
     // if (!username || !password) throw new Error("Missing credentials");
     // const accessToken = "dev-token";
-    // const userObj = { id: 1, username };
+    // const user = { id: 1, username };
 
-    setToken(accessToken);
-    setUser(user);
+    await setToken(accessToken);
+    await setUser(user);
     return true;
   };
 

@@ -1,10 +1,12 @@
 import { Routes, Route, Navigate } from "react-router";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
+import Purchases from "./pages/Purchases";
+import Transfers from "./pages/Transfers";
+import Assignments from "./pages/Assignments";
 import SignIn from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
-// import AppTheme from "./shared-theme/AppTheme.jsx";
-import AppTheme from "./shared-theme/AppTheme"; // ensure .jsx extension
+import AppTheme from "./shared-theme/AppTheme.jsx";
 
 export default function App() {
   return (
@@ -18,6 +20,36 @@ export default function App() {
             <PrivateRoute>
               <DashboardLayout>
                 <Dashboard />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/purchases"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <Purchases />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/transfers"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <Transfers />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/assignments"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <Assignments />
               </DashboardLayout>
             </PrivateRoute>
           }

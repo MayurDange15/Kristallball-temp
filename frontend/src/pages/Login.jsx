@@ -59,7 +59,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props) {
+export default function SignIn() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -96,12 +96,13 @@ export default function SignIn(props) {
       navigate("/dashboard", { replace: true });
     } catch (err) {
       console.log(err);
-      setError(err?.response?.data?.message || "Login failed");
+      setError(err.message || "Login failed");
     }
   };
 
   return (
-    <AppTheme {...props}>
+    // <AppTheme {...props}>
+    <>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect
@@ -178,6 +179,7 @@ export default function SignIn(props) {
           </Typography>
         </Card>
       </SignInContainer>
-    </AppTheme>
+    </>
+    // </AppTheme>
   );
 }

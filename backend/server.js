@@ -7,6 +7,8 @@ const purchasesRoutes = require("./routes/purchases");
 const transfersRoutes = require("./routes/transfers");
 const assignmentsRoutes = require("./routes/assignments");
 const dashboardRoutes = require("./routes/dashboard");
+const basesRoutes = require("./routes/bases");
+const assetsRoutes = require("./routes/assets");
 
 dotenv.config();
 const app = express();
@@ -28,6 +30,8 @@ app.use("/api/purchases", purchasesRoutes);
 app.use("/api/transfers", transfersRoutes);
 app.use("/api/assignments", assignmentsRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/bases", basesRoutes);
+app.use("/api/assets", assetsRoutes);
 
 // Example protected route
 const { protect } = require("./middleware/auth");
