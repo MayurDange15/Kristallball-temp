@@ -1,26 +1,21 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Divider from "@mui/material/Divider";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
+import { useContext, useState } from "react";
 import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
-// import ForgotPassword from "./components/ForgotPassword";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  styled,
+  Stack,
+  CssBaseline,
+  FormControl,
+  FormLabel,
+  Alert,
+} from "@mui/material";
 import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
-// import {
-//   GoogleIcon,
-//   FacebookIcon,
-//   SitemarkIcon,
-// } from "./components/CustomIcons";
+import { useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -65,57 +60,44 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [open, setOpen] = React.useState(false);
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
-  const validateInputs = () => {
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+    if (!username.trim()) {
+      setUsernameError("Please enter a valid username.");
       isValid = false;
     } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
+      setUsernameError("");
     }
 
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+    if (!password.trim()) {
+      setPasswordError("Please enter a valid password.");
       isValid = false;
     } else {
-      setPasswordError(false);
-      setPasswordErrorMessage("");
+      setPasswordError("");
     }
 
-    return isValid;
+    if (!isValid) return;
+
+    try {
+      await login(username, password);
+      navigate("/", { replace: true });
+    } catch (err) {
+      console.log(err);
+      setError(err?.response?.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -126,7 +108,6 @@ export default function SignIn(props) {
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
         />
         <Card variant="outlined">
-          <SitemarkIcon />
           <Typography
             component="h1"
             variant="h4"
@@ -146,91 +127,55 @@ export default function SignIn(props) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="username">Username</FormLabel>
               <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
+                error={!!usernameError}
+                helperText={usernameError}
+                id="username"
+                type="text"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="your username"
+                // autoComplete="email"
                 autoFocus
                 required
                 fullWidth
                 variant="outlined"
-                color={emailError ? "error" : "primary"}
+                color={usernameError ? "error" : "primary"}
               />
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
+                error={!!passwordError}
+                helperText={passwordError}
                 name="password"
                 placeholder="••••••"
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
-                autoFocus
                 required
                 fullWidth
                 variant="outlined"
                 color={passwordError ? "error" : "primary"}
               />
             </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <ForgotPassword open={open} handleClose={handleClose} />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={validateInputs}
-            >
+            <Button type="submit" fullWidth variant="contained">
               Sign in
             </Button>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: "center" }}
-            >
-              Forgot your password?
-            </Link>
           </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert("Sign in with Google")}
-              startIcon={<GoogleIcon />}
-            >
-              Sign in with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert("Sign in with Facebook")}
-              startIcon={<FacebookIcon />}
-            >
-              Sign in with Facebook
-            </Button>
-            <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: "center" }}
-              >
-                Sign up
-              </Link>
-            </Typography>
-          </Box>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+          <Typography variant="body2" sx={{ mt: 2, color: "text.secondary" }}>
+            Try users from your seed data: admin / cmdr_alpha / log_bravo
+            (password: <code>password</code>).
+          </Typography>
         </Card>
       </SignInContainer>
     </AppTheme>
