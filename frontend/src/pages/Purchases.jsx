@@ -96,7 +96,7 @@ export default function Purchases() {
 
   return (
     <Container sx={{ mt: 3 }}>
-      {["admin", "logistics"].includes(user.role) && (
+      {user && ["admin", "logistics"].includes(user.role) && (
         <>
           <Typography variant="h5">Add Purchase</Typography>
           <Box

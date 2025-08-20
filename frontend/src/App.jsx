@@ -27,48 +27,20 @@ export default function App() {
     <AppTheme themeComponents={themeComponents}>
       <CssBaseline enableColorScheme />
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route
-          path="/dashboard"
           element={
             <PrivateRoute>
-              <DashboardLayout>
-                <Dashboard />
-              </DashboardLayout>
+              <DashboardLayout />
             </PrivateRoute>
           }
-        />
-        <Route
-          path="/purchases"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <Purchases />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/transfers"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <Transfers />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/assignments"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <Assignments />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="purchases" element={<Purchases />} />
+          <Route path="transfers" element={<Transfers />} />
+          <Route path="assignments" element={<Assignments />} />
+        </Route>
 
         <Route path="/login" element={<SignIn />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
