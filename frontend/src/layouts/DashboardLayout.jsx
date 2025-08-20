@@ -1,131 +1,92 @@
-import { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Drawer,
-  Box,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  Button,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import { Link as RouterLink, useNavigate } from "react-router";
-import { useAuth } from "../context/AuthContext";
+import * as React from "react";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import { Outlet } from "react-router";
+import DashboardHeader from "./DashboardHeader";
+import DashboardSidebar from "./DashboardSidebar";
 
-const drawerWidth = 240;
+export default function DashboardLayout() {
+  const theme = useTheme();
 
-export default function DashboardLayout({ children }) {
-  const [open, setOpen] = useState(false);
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const [isDesktopNavigationExpanded, setIsDesktopNavigationExpanded] =
+    React.useState(true);
+  const [isMobileNavigationExpanded, setIsMobileNavigationExpanded] =
+    React.useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
-  };
+  const isOverMdViewport = useMediaQuery(theme.breakpoints.up("md"));
+
+  const isNavigationExpanded = isOverMdViewport
+    ? isDesktopNavigationExpanded
+    : isMobileNavigationExpanded;
+
+  const setIsNavigationExpanded = React.useCallback(
+    (newExpanded) => {
+      if (isOverMdViewport) {
+        setIsDesktopNavigationExpanded(newExpanded);
+      } else {
+        setIsMobileNavigationExpanded(newExpanded);
+      }
+    },
+    [
+      isOverMdViewport,
+      setIsDesktopNavigationExpanded,
+      setIsMobileNavigationExpanded,
+    ]
+  );
+
+  const handleToggleHeaderMenu = React.useCallback(
+    (isExpanded) => {
+      setIsNavigationExpanded(isExpanded);
+    },
+    [setIsNavigationExpanded]
+  );
+
+  const layoutRef = React.useRef(null);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" sx={{ zIndex: (t) => t.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            onClick={() => setOpen(true)}
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            Kristalball
-          </Typography>
-          <Typography variant="body2" sx={{ mr: 2 }}>
-            {user ? `Hi, ${user.username}` : ""}
-          </Typography>
-          <Button
-            onClick={handleLogout}
-            color="inherit"
-            startIcon={<LogoutIcon />}
-            aria-label="logout"
-          >
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-        variant="temporary"
-        open={open}
-        onClose={() => setOpen(false)}
-        ModalProps={{ keepMounted: true }}
-        sx={{ "& .MuiDrawer-paper": { width: drawerWidth } }}
+    <Box
+      ref={layoutRef}
+      sx={{
+        position: "relative",
+        display: "flex",
+        overflow: "hidden",
+        height: "100%",
+        width: "100%",
+      }}
+    >
+      <DashboardHeader
+        logo={""}
+        title=""
+        menuOpen={isNavigationExpanded}
+        onToggleMenu={handleToggleHeaderMenu}
+      />
+      <DashboardSidebar
+        expanded={isNavigationExpanded}
+        setExpanded={setIsNavigationExpanded}
+        container={layoutRef?.current ?? undefined}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          minWidth: 0,
+        }}
       >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            <ListItemButton
-              component={RouterLink}
-              to="/dashboard"
-              onClick={() => setOpen(false)}
-            >
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-            {user && ["admin", "logistics"].includes(user.role) && (
-              <>
-                <ListItemButton
-                  component={RouterLink}
-                  to="/purchases"
-                  onClick={() => setOpen(false)}
-                >
-                  <ListItemIcon>
-                    <ShoppingCartIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Purchases" />
-                </ListItemButton>
-                <ListItemButton
-                  component={RouterLink}
-                  to="/transfers"
-                  onClick={() => setOpen(false)}
-                >
-                  <ListItemIcon>
-                    <SwapHorizIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Transfers" />
-                </ListItemButton>
-              </>
-            )}
-            {user && ["admin", "commander"].includes(user.role) && (
-              <ListItemButton
-                component={RouterLink}
-                to="/assignments"
-                onClick={() => setOpen(false)}
-              >
-                <ListItemIcon>
-                  <AssignmentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Assignments" />
-              </ListItemButton>
-            )}
-          </List>
-          <Divider />
+        <Toolbar sx={{ displayPrint: "none" }} />
+        <Box
+          component="main"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            overflow: "auto",
+          }}
+        >
+          <Outlet />
         </Box>
-      </Drawer>
-
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        {children}
       </Box>
     </Box>
   );

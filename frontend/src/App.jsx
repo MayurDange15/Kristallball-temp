@@ -7,10 +7,25 @@ import Assignments from "./pages/Assignments";
 import SignIn from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
 import AppTheme from "./shared-theme/AppTheme.jsx";
+import {
+  dataGridCustomizations,
+  datePickersCustomizations,
+  formInputCustomizations,
+  sidebarCustomizations,
+} from "./shared-theme/customizations/";
+import { CssBaseline } from "@mui/material";
+
+const themeComponents = {
+  ...dataGridCustomizations,
+  ...datePickersCustomizations,
+  ...sidebarCustomizations,
+  ...formInputCustomizations,
+};
 
 export default function App() {
   return (
-    <AppTheme>
+    <AppTheme themeComponents={themeComponents}>
+      <CssBaseline enableColorScheme />
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
