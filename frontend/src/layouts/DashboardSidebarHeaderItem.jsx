@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import ListSubheader from "@mui/material/ListSubheader";
 
 import { getDrawerSxTransitionMixin } from "../mixins";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const DashboardSidebarContext = React.createContext(null);
+import { DashboardSidebarContext } from "./DashboardSidebar";
 export const DRAWER_WIDTH = 240; // px
 export const MINI_DRAWER_WIDTH = 90; // px
 

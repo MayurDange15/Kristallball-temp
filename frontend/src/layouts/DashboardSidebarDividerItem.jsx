@@ -2,9 +2,7 @@ import * as React from "react";
 import Divider from "@mui/material/Divider";
 
 import { getDrawerSxTransitionMixin } from "../mixins";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const DashboardSidebarContext = React.createContext(null);
+import { DashboardSidebarContext } from "./DashboardSidebar";
 
 export default function DashboardSidebarDividerItem() {
   const sidebarContext = React.useContext(DashboardSidebarContext);

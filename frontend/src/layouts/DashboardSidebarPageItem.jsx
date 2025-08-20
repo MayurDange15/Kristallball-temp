@@ -14,9 +14,7 @@ import Typography from "@mui/material/Typography";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const DashboardSidebarContext = React.createContext(null);
+import { DashboardSidebarContext } from "./DashboardSidebar";
 export const DRAWER_WIDTH = 240; // px
 export const MINI_DRAWER_WIDTH = 90; // px
 
