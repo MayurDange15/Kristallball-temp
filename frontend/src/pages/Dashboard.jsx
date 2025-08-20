@@ -1,18 +1,14 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { Typography, Container } from "@mui/material";
+import { Paper, Typography, Stack } from "@mui/material";
 
 export default function Dashboard() {
-  const { user } = useContext(AuthContext);
   return (
-    <Container sx={{ mt: 3 }}>
-      <Typography variant="h5">Dashboard</Typography>
-      <Typography sx={{ mt: 1 }}>
-        Welcome, <b>{user?.username}</b> — role: <b>{user?.role}</b>
-      </Typography>
-      <Typography sx={{ mt: 2 }}>
-        Next: we’ll pull real metrics from <code>/api/dashboard</code>.
-      </Typography>
-    </Container>
+    <Stack spacing={2}>
+      <Typography variant="h4">Dashboard</Typography>
+      <Paper sx={{ p: 2 }}>
+        <Typography>
+          Your dashboard is live. Wire real widgets and API data next.
+        </Typography>
+      </Paper>
+    </Stack>
   );
 }

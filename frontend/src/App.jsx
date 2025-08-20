@@ -1,55 +1,31 @@
-import { BrowserRouter, Routes, Route } from "react-router";
-import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
-import NavBar from "./components/NavBar";
-
+import { Routes, Route, Navigate } from "react-router";
+import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
-import Purchases from "./pages/Purchases";
-import Transfers from "./pages/Transfers";
-import Assignments from "./pages/Assignments";
-import Login from "./pages/Login";
+import SignIn from "./pages/Login";
+import PrivateRoute from "./routes/PrivateRoute";
+// import AppTheme from "./shared-theme/AppTheme.jsx";
+import AppTheme from "./shared-theme/AppTheme"; // ensure .jsx extension
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
+    <AppTheme>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
                 <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/purchases"
-            element={
-              <ProtectedRoute>
-                <Purchases />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/transfers"
-            element={
-              <ProtectedRoute>
-                <Transfers />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/assignments"
-            element={
-              <ProtectedRoute>
-                <Assignments />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route path="/login" element={<SignIn />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </AppTheme>
   );
 }

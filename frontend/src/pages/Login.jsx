@@ -93,7 +93,7 @@ export default function SignIn(props) {
 
     try {
       await login(username, password);
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       console.log(err);
       setError(err?.response?.data?.message || "Login failed");
