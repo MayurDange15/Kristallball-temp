@@ -48,6 +48,7 @@ export function AuthProvider({ children }) {
     const data = await res.json();
     if (!res.ok) throw new Error(data?.message || "Login failed");
     const { accessToken, user } = data;
+    console.log("Login success:", user, accessToken);
 
     // Temporary stub to keep you moving:
     // if (!username || !password) throw new Error("Missing credentials");
