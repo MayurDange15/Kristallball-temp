@@ -93,6 +93,7 @@ export default function SignIn() {
 
     try {
       await login(username, password);
+      console.log("Navigating now...");
       navigate("/dashboard", { replace: true });
     } catch (err) {
       console.log(err);
