@@ -43,16 +43,19 @@ export function AuthProvider({ children }) {
       body: JSON.stringify({ username, password }),
     });
 
-    if (!res.ok) throw new Error((await res.json())?.message || "Login failed");
-    const { accessToken, user } = await res.json();
+    // if (!res.ok) throw new Error((await res.json())?.message || "Login failed");
+    // const { accessToken, user } = await res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.message || "Login failed");
+    const { accessToken, user } = data;
 
     // Temporary stub to keep you moving:
     // if (!username || !password) throw new Error("Missing credentials");
     // const accessToken = "dev-token";
     // const user = { id: 1, username };
 
-    await setToken(accessToken);
-    await setUser(user);
+    setToken(accessToken);
+    setUser(user);
     return true;
   };
 
