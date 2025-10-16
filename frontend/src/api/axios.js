@@ -9,11 +9,15 @@ api.interceptors.request.use((config) => {
   const authDataString = localStorage.getItem("auth");
 
   if (authDataString) {
-    const authData = JSON.parse(authDataString);
-    const token = authData?.token; // Safely access the token property
+    try {
+      const authData = JSON.parse(authDataString);
+      const token = authData?.token; // Safely access the token property
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (e) {
+      console.error("Could not parse auth token from localStorage", e);
     }
   }
 
