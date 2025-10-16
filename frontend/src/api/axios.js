@@ -6,8 +6,17 @@ const api = axios.create({
 
 // attach token automatically
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  const authDataString = localStorage.getItem("auth");
+
+  if (authDataString) {
+    const authData = JSON.parse(authDataString);
+    const token = authData?.token; // Safely access the token property
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
   return config;
 });
 
