@@ -10,7 +10,7 @@ export default function PrivateRoute({ children }) {
     return null;
   }
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
