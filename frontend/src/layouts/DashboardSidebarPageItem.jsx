@@ -13,7 +13,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { DashboardSidebarContext } from "./DashboardSidebar";
 export const DRAWER_WIDTH = 240; // px
 export const MINI_DRAWER_WIDTH = 90; // px
